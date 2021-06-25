@@ -1,0 +1,18 @@
+<mat-card-header >
+    <mat-card-title>{{name}}</mat-card-title>
+    <mat-card-subtitle>{{artist}}</mat-card-subtitle>
+</mat-card-header>
+<img mat-card-image [src]="imageUrl" alt="Photo">
+<mat-card-content>
+        <h2>
+            {{albomName}}
+        </h2>
+      <h5>
+       <b>Release Date:</b>  {{release_date | date}}
+      </h5> 
+   
+    <p>
+        <a [href]="sanitize(track_url)">play on Spotify</a>
+        
+    </p>
+</mat-card-content>

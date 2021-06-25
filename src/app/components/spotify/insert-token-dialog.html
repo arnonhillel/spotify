@@ -1,0 +1,13 @@
+<div class="insert-token">
+    <h1 mat-dialog-title>Insert Token</h1>
+    <h3 mat-dialog-title>you can find the OAuth Token <a href="https://developer.spotify.com/documentation/web-playback-sdk/quick-start/" target="_blank">here</a></h3>
+    <mat-dialog-content class="mat-typography">
+        <form style="width: 100%;" [formGroup]="tokenFormGroup" form-field>
+            <input class="input-field" type="text" autocomplete="off" formControlName="token" id="token"
+                class="form-control" placeholder="BQDsbn1UlTv5..." autofocus="">
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-button class="btn btn-danger" (click)="addToken()">Update Token</button>
+    </mat-dialog-actions>
+</div>

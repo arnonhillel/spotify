@@ -1,0 +1,15 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;  
+}
+mat-card {
+    width: 350px;
+    height: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.mat-card-image{
+  width: calc(85% + 32px);
+}

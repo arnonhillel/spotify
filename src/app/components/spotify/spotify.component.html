@@ -9,9 +9,20 @@
                         type="search" autocomplete="off" formControlName="searchValue" id="searchValue"
                         class="form-control" placeholder="Rayjett  Highway 90" autofocus="">
                 </div>
+            
                 <div>
                     <button class="btn btn-dark" (click)="search()">Search</button>
                 </div>
+            </div>
+    
+            <div fxLayout="row" fxLayoutAlign="center center" style="float: right;">
+                <mat-form-field appearance="fill">
+                  <mat-label style="color: black;">Release Year</mat-label>
+                  <mat-select (selectionChange)="changeYear($event.value)">
+                    <mat-option [value]="-1">--------</mat-option>
+                    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
             </div>
         </form>
     </div>
@@ -35,7 +46,7 @@
         </mat-card>
     </div>
     <div>
-        <button class="btn btn-dark previous" style="margin-right: 15px;" (click)="nextPrevPage('prevPage')">&laquo; Previous</button>
-        <button class="btn btn-dark next" (click)="nextPrevPage('nextPage')">Next &raquo;</button>
+        <button  [disabled]="!pages.prevPage" class="btn btn-dark previous" style="margin-right: 15px;" (click)="nextPrevPage('prevPage')">&laquo; Previous</button>
+        <button [disabled]="!pages.nextPage" class="btn btn-dark next" (click)="nextPrevPage('nextPage')">Next &raquo;</button>
     </div>
 </div>

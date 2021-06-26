@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ToastrModule } from 'ngx-toastr';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {MatChipsModule} from '@angular/material/chips';
     MatCardModule,
     ToastrModule.forRoot(),
     MatDialogModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSelectModule
     
     
     

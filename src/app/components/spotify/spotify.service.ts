@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map,catchError } from "rxjs/operators";
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { map, catchError } from "rxjs/operators";
 import { HttpClient } from "@angular/common/http";
 import { spotifyEnvironment } from 'src/environments/spotify.environment';
 import { ToastrService } from "ngx-toastr";
@@ -27,15 +27,15 @@ export class SpotifyService {
   private isTokenValid = new Subject<boolean>();
   serviceIsTokenValid$ = this.isTokenValid.asObservable();
 
-  constructor(private http: HttpClient,private toastr: ToastrService) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
 
 
-  public setPagesUrls(pages:PagesUrls) {
+  public setPagesUrls(pages: PagesUrls) {
     this.pagesUrls.next(pages)
   }
 
-  public setToken(flag:boolean) {
+  public setToken(flag: boolean) {
     this.isTokenValid.next(flag)
   }
 
@@ -48,7 +48,6 @@ export class SpotifyService {
   }
   //  ------------------------------HTTP-----------------------
 
-  // get headerOptions - connect to server
   public getAuthorizationDict() {
     const authorizationData = `Bearer ${this.getToken()}`;
     const headerOptions = {
@@ -60,20 +59,22 @@ export class SpotifyService {
   }
 
 
-  public getToken(){
+  public getToken() {
     let token = JSON.parse(localStorage.getItem('spotifyToken'))
-    if(!!token){
+    if (!!token) {
       return token
     }
   }
 
-  public search(url: string): Observable<any>{
+  public search(url: string): Observable<any> {
     const headerOptions = this.getAuthorizationDict();
-                  // "https://api.spotify.com/v1/search?query=rayje&type=track&offset=5&limit=5"
     return this.http.get(url, headerOptions)
       .pipe(
         map((data) => {
           if (data['tracks'].items) {
+            if (data['tracks'].items.length == 0) {
+              this.toastr.warning('No results were found')
+            }
             this.setSearchResultData(data['tracks'].items)
             let pages = {
               nextPage: data['tracks'].next || undefined,
@@ -85,16 +86,27 @@ export class SpotifyService {
           }
         }),
         catchError(err => {
-          if(err.error.error.status==401){
-            let errMsg = err.error.error.message
-            this.toastr.error('ERROR',errMsg)
-            localStorage.removeItem('spotifyToken')
-            this.setToken(false)
-            return errMsg
-          }
+          let errMsg = this.handleErrors(err)
+          this.toastr.error('ERROR', errMsg)
           return `ERROR: ${err}`
         })
       )
-      
+
   }
+
+
+
+  private handleErrors(err) {
+    let errMsg = err.error.error.message
+    if (err.error.error.status == 401) {
+      localStorage.removeItem('spotifyToken')
+      this.setToken(false)
+    }
+    return errMsg
+  }
+
+
+  
+
+
 }
